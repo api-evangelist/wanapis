@@ -1,0 +1,60 @@
+aid: wanapis
+name: WanAPIs
+description: Developer-focused AI API gateway with an OpenAI-compatible endpoint. One API key gives access to GPT, Claude, Gemini, DeepSeek, image, video, and audio models behind a single unified surface. Platform includes a model marketplace, usage logs, quota management, transparent metering, multi-channel routing, and failover.
+url: https://wanapis.com/apis.yml
+image: https://wanapis.com/logo.png
+specificationVersion: '0.20'
+created: '2026-05-27'
+modified: '2026-05-27'
+tags:
+  - LLM Gateway
+  - AI API Gateway
+  - OpenAI Compatible
+  - Model Marketplace
+  - LLM
+  - GPT
+  - Claude
+  - Gemini
+  - DeepSeek
+  - Image Generation
+  - Video Generation
+  - Audio
+  - Multimodal
+  - Routing
+  - Failover
+apis:
+  - name: WanAPIs Unified AI API
+    description: OpenAI-compatible REST API gateway aggregating GPT, Claude, Gemini, DeepSeek, plus image, video, and audio model providers behind a single key and routing/failover layer. Model marketplace, usage logs, quota management, and transparent metering.
+    humanURL: https://wanapis.com/
+    baseURL: https://api.wanapis.com/v1
+    tags:
+      - LLM Gateway
+      - OpenAI Compatible
+      - Multi-Provider
+    properties:
+      - type: Documentation
+        url: https://wanapis.com/docs
+      - type: ModelMarketplace
+        url: https://wanapis.com/model
+      - type: Pricing
+        url: https://wanapis.com/pricing
+      - type: Signup
+        url: https://wanapis.com/auth
+    contact:
+      - FN: WanAPIs Support
+        email: support@wanapis.com
+        url: https://wanapis.com/
+common:
+  - type: Website
+    url: https://wanapis.com/
+  - type: Documentation
+    url: https://wanapis.com/docs
+  - type: ModelMarketplace
+    url: https://wanapis.com/model
+  - type: Pricing
+    url: https://wanapis.com/pricing
+  - type: SignUp
+    url: https://wanapis.com/auth
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
