@@ -1,0 +1,95 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: WanAPIs
+providerId: wanapis
+created: '2026-05-27'
+modified: '2026-05-27'
+reconciled: false
+tags:
+  - AI
+  - LLM Gateway
+  - Pay As You Go
+  - Per-Model Pricing
+description: |
+  WanAPIs uses dynamic per-model pay-as-you-go pricing rather than fixed
+  subscription tiers. There are no monthly fees and no minimum spend; users
+  top up a balance and pay per token at the published per-model rate. New
+  registrations receive a $0.20 welcome credit. Pricing is computed as
+  (input_tokens × input_price) + (output_tokens × output_price), modulated by
+  per-model `model_ratio` and `completion_ratio` multipliers. Because per-
+  model prices change as upstream vendors revise their rates, this artifact
+  is marked `reconciled: false` — verify against https://wanapis.com/pricing
+  before billing decisions.
+sources:
+  - https://wanapis.com/pricing
+  - https://wanapis.com/model
+plans:
+  - id: wanapis-welcome
+    name: Welcome Credit
+    type: freemium
+    description: Every new WanAPIs registration receives a $0.20 credit to evaluate the gateway across any model in the marketplace.
+    entries:
+      - label: Welcome credit
+        name: welcome_credit
+        type: credit
+        metric: usd
+        limit: 0.20
+        timeFrame: signup
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: All marketplace models accessible
+      - name: No subscription required
+      - name: No minimum spend
+  - id: wanapis-payg
+    name: Pay As You Go
+    type: usage-based
+    description: |
+      Top up a balance and consume models at per-model token rates. No monthly
+      fee, no minimum spend, balance withdrawable at any time. Cost formula:
+      cost = (input_tokens × input_price) + (output_tokens × output_price),
+      with input_price and output_price published per model.
+    entries:
+      - label: Per-model usage
+        name: model_usage
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: per-model published rate
+        userMultiplied: false
+      - label: Quota unit conversion
+        name: quota_units
+        type: reference
+        metric: usd
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '$1 = 500,000 quota units'
+        userMultiplied: false
+    elements:
+      - name: 345+ models from 13+ vendors
+      - name: OpenAI-compatible base URL
+      - name: Per-project quota and key scoping
+      - name: Channel routing and automatic failover
+      - name: Detailed metering and request logs
+      - name: Withdraw balance any time
+    examples:
+      - model: claude-opus-4-7
+        input_per_million_tokens: 5.00
+        output_per_million_tokens: 25.00
+        currency: USD
+      - model: claude-3-5-haiku-20241022
+        input_per_million_tokens: 0.80
+        output_per_million_tokens: 4.00
+        currency: USD
+      - model: deepseek-chat
+        input_per_million_tokens: 0.14
+        output_per_million_tokens: 0.28
+        currency: USD

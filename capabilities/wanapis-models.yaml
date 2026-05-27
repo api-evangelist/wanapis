@@ -1,0 +1,104 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WanAPIs API — Models
+  description: 'WanAPIs API — Models. 2 operations: list models, retrieve model. Discovery against the WanAPIs model marketplace (345+ models across 13+ vendors).'
+  tags:
+  - WanAPIs
+  - Models
+  - Model Marketplace
+  created: '2026-05-27'
+  modified: '2026-05-27'
+binds:
+- namespace: env
+  keys:
+    WANAPIS_API_KEY: WANAPIS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wanapis-models
+    baseUri: https://api.wanapis.com/v1
+    description: WanAPIs API — Models business capability.
+    resources:
+    - name: models
+      path: /models
+      operations:
+      - name: listmodels
+        method: GET
+        description: List available models
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: model
+      path: /models/{model}
+      operations:
+      - name: getmodel
+        method: GET
+        description: Retrieve a model
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: model
+          in: path
+          type: string
+          required: true
+          description: Model ID/slug.
+    authentication:
+      type: bearer
+      token: '{{env.WANAPIS_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: wanapis-models-rest
+    port: 8080
+    description: REST adapter for WanAPIs API — Models.
+    resources:
+    - path: /v1/models
+      name: models
+      description: REST surface for listing models.
+      operations:
+      - method: GET
+        name: listmodels
+        description: List available models
+        call: wanapis-models.listmodels
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/models/{model}
+      name: model
+      description: REST surface for retrieving a model.
+      operations:
+      - method: GET
+        name: getmodel
+        description: Retrieve a model
+        call: wanapis-models.getmodel
+        with:
+          model: rest.path.model
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wanapis-models-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WanAPIs API — Models.
+    tools:
+    - name: list-models
+      description: List available models
+      hints: { readOnly: true, destructive: false, idempotent: true }
+      call: wanapis-models.listmodels
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-model
+      description: Retrieve a model
+      hints: { readOnly: true, destructive: false, idempotent: true }
+      call: wanapis-models.getmodel
+      with:
+        model: tools.model
+      outputParameters:
+      - type: object
+        mapping: $.

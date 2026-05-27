@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wanapis.com/schemas/EmbeddingRequest.json",
+  "title": "EmbeddingRequest",
+  "description": "OpenAI-compatible embedding request accepted by POST https://api.wanapis.com/v1/embeddings.",
+  "type": "object",
+  "required": ["model", "input"],
+  "properties": {
+    "model": { "type": "string" },
+    "input": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } },
+        { "type": "array", "items": { "type": "array", "items": { "type": "integer" } } }
+      ]
+    },
+    "encoding_format": {
+      "type": "string",
+      "enum": ["float", "base64"],
+      "default": "float"
+    },
+    "dimensions": { "type": "integer", "minimum": 1 },
+    "user": { "type": "string" }
+  }
+}

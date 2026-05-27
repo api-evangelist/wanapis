@@ -1,0 +1,52 @@
+name: WanAPIs Domain Vocabulary
+provider: WanAPIs
+providerId: wanapis
+description: Domain vocabulary for the WanAPIs unified AI API gateway. Terms derive from the marketing site, docs, marketplace and pricing pages.
+sources:
+  - https://wanapis.com/
+  - https://wanapis.com/docs
+  - https://wanapis.com/model
+  - https://wanapis.com/pricing
+created: '2026-05-27'
+modified: '2026-05-27'
+terms:
+  - term: Gateway
+    description: The single OpenAI-compatible HTTPS entry point at https://api.wanapis.com/v1 that fronts all upstream model providers.
+  - term: Provider
+    description: An upstream model vendor (OpenAI, Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability, Midjourney, ...) whose models WanAPIs aggregates.
+  - term: Model
+    description: A specific addressable inference target identified by slug (e.g. claude-opus-4-7, deepseek-v4-pro, gemini-3.5-flash).
+  - term: Model Marketplace
+    description: The WanAPIs catalog at https://wanapis.com/model — 345+ models across 13+ vendors, filterable by capability, cost, and stability.
+  - term: Channel
+    description: A configured route from a WanAPIs model slug to an upstream provider key/endpoint. Used by routing and failover.
+  - term: Channel Routing
+    description: Dynamic selection of an upstream channel for a given request, based on availability, cost, and stability.
+  - term: Failover
+    description: Automatic re-issue of a request to an alternate channel when the primary returns 503 or times out.
+  - term: Quota
+    description: Per-project spending or token cap that throttles or stops requests once exceeded.
+  - term: Quota Unit
+    description: WanAPIs internal billing unit. $1 USD = 500,000 quota units (or, alternatively, ¥1 = $1 quota at 1:1).
+  - term: Metering
+    description: Per-request capture of prompt tokens, completion tokens, cache hits, model ratio, and final cost.
+  - term: Model Ratio
+    description: Input-cost multiplier applied to a model's base price when computing usage charges.
+  - term: Completion Ratio
+    description: Output-cost multiplier applied to a model's base price; typically 2x–8x the input ratio.
+  - term: Project
+    description: Logical grouping of keys, quotas, and model availability inside a WanAPIs account.
+  - term: API Key
+    description: Bearer credential issued per project, sent as `Authorization: Bearer <key>`.
+  - term: Task
+    description: An async job (image, video, audio) identified by a task_id; polled via /tasks/{task_id} or delivered via webhook callback.
+  - term: Webhook Callback
+    description: Optional URL where WanAPIs POSTs the result payload when an async task completes.
+  - term: Request Log
+    description: Persisted record of an API call with request ID, model, channel, latency, tokens, and cost — surfaced in the dashboard for troubleshooting.
+  - term: Cache Hit
+    description: Indicator that a response was served (in part) from the gateway's prompt/result cache, reducing upstream cost.
+  - term: OpenAI Compatibility
+    description: Promise that WanAPIs accepts the OpenAI HTTP shapes for /chat/completions, /responses, /embeddings, etc., so existing OpenAI SDKs work by changing only base_url.
+  - term: Responses API
+    description: WanAPIs-native endpoint /v1/responses for structured, multi-step model workflows; mirrors the OpenAI Responses API.

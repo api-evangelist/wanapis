@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wanapis.com/schemas/ChatCompletionRequest.json",
+  "title": "ChatCompletionRequest",
+  "description": "OpenAI-compatible chat completion request accepted by POST https://api.wanapis.com/v1/chat/completions.",
+  "type": "object",
+  "required": ["model", "messages"],
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "WanAPIs marketplace model slug (e.g. claude-opus-4-7, deepseek-v4-pro, gemini-3.5-flash, gpt-5.5)."
+    },
+    "messages": {
+      "type": "array",
+      "items": { "$ref": "wanapis-chatmessage-schema.json" }
+    },
+    "stream": { "type": "boolean", "default": false },
+    "max_tokens": { "type": "integer", "minimum": 1 },
+    "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+    "top_p": { "type": "number", "minimum": 0, "maximum": 1 },
+    "n": { "type": "integer", "minimum": 1, "default": 1 },
+    "stop": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ]
+    },
+    "presence_penalty": { "type": "number" },
+    "frequency_penalty": { "type": "number" },
+    "seed": { "type": "integer" },
+    "response_format": { "type": "object" },
+    "tools": { "type": "array", "items": { "type": "object" } },
+    "tool_choice": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" }
+      ]
+    },
+    "user": { "type": "string" }
+  },
+  "additionalProperties": true
+}

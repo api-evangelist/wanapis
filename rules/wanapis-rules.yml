@@ -1,0 +1,73 @@
+extends:
+  - spectral:oas
+formats:
+  - oas3_1
+rules:
+  # WanAPIs is OpenAI-compatible; enforce the conventions that matter for the
+  # gateway: bearer auth on every operation, /v1 prefix on the server, and
+  # consistent OpenAI-style JSON shapes.
+
+  wanapis-server-base-url:
+    description: Servers must use the documented WanAPIs OpenAI-compatible base URL.
+    severity: error
+    given: $.servers[*]
+    then:
+      field: url
+      function: pattern
+      functionOptions:
+        match: '^https://api\.wanapis\.com/v1$'
+
+  wanapis-bearer-auth-required:
+    description: Every operation must inherit bearer auth (global security or operation-level).
+    severity: error
+    given: $
+    then:
+      field: components.securitySchemes.bearerAuth
+      function: truthy
+
+  wanapis-operation-id-camelcase:
+    description: operationId should be camelCase (e.g. createChatCompletion).
+    severity: warn
+    given: $.paths[*][*].operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]+$'
+
+  wanapis-tag-required:
+    description: Every operation must declare at least one tag.
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: tags
+      function: length
+      functionOptions: { min: 1 }
+
+  wanapis-response-schema-required:
+    description: 2xx responses must declare an application/json or audio schema.
+    severity: warn
+    given: $.paths[*][*].responses['200'].content
+    then:
+      function: truthy
+
+  wanapis-error-schema:
+    description: 4xx/5xx responses should reference the Error schema.
+    severity: warn
+    given: $.paths[*][*].responses[?(@property.match(/^(4|5)\\d{2}$/))]
+    then:
+      field: $ref
+      function: pattern
+      functionOptions:
+        match: 'Error'
+
+  wanapis-model-parameter:
+    description: Request bodies for inference endpoints must include a `model` field.
+    severity: warn
+    given: $.components.schemas[?(@property.match(/Request$/))]
+    then:
+      field: required
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          contains: { const: model }

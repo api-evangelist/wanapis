@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.wanapis.com/v1/embeddings",
+    "headers": {
+      "Authorization": "Bearer sk-wanapis-REDACTED",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "model": "text-embedding-3-large",
+      "input": ["API governance", "API gateway", "model marketplace"],
+      "encoding_format": "float"
+    }
+  },
+  "response": {
+    "object": "list",
+    "model": "text-embedding-3-large",
+    "data": [
+      { "object": "embedding", "index": 0, "embedding": [0.0123, -0.0456, 0.0789, "...truncated..."] },
+      { "object": "embedding", "index": 1, "embedding": [0.0211, -0.0312, 0.0907, "...truncated..."] },
+      { "object": "embedding", "index": 2, "embedding": [-0.0098, 0.0445, 0.0156, "...truncated..."] }
+    ],
+    "usage": {
+      "prompt_tokens": 9,
+      "total_tokens": 9
+    }
+  }
+}

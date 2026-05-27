@@ -1,0 +1,75 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WanAPIs API — Tasks
+  description: 'WanAPIs API — Tasks. 1 operation. Poll the status of long-running async jobs (image, video, audio) created by other endpoints.'
+  tags:
+  - WanAPIs
+  - Tasks
+  - Async
+  created: '2026-05-27'
+  modified: '2026-05-27'
+binds:
+- namespace: env
+  keys:
+    WANAPIS_API_KEY: WANAPIS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wanapis-tasks
+    baseUri: https://api.wanapis.com/v1
+    description: WanAPIs API — Tasks business capability.
+    resources:
+    - name: tasks
+      path: /tasks/{task_id}
+      operations:
+      - name: gettask
+        method: GET
+        description: Poll a task status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: task_id
+          in: path
+          type: string
+          required: true
+          description: Task ID returned from a long-running endpoint.
+    authentication:
+      type: bearer
+      token: '{{env.WANAPIS_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: wanapis-tasks-rest
+    port: 8080
+    description: REST adapter for WanAPIs API — Tasks.
+    resources:
+    - path: /v1/tasks/{task_id}
+      name: tasks
+      description: REST surface for task polling.
+      operations:
+      - method: GET
+        name: gettask
+        description: Poll a task status
+        call: wanapis-tasks.gettask
+        with:
+          task_id: rest.path.task_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wanapis-tasks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WanAPIs API — Tasks.
+    tools:
+    - name: get-task
+      description: Poll a task status
+      hints: { readOnly: true, destructive: false, idempotent: true }
+      call: wanapis-tasks.gettask
+      with:
+        task_id: tools.task_id
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.wanapis.com/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer sk-wanapis-REDACTED",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "model": "claude-opus-4-7",
+      "messages": [
+        { "role": "system", "content": "You are a concise API documentation assistant." },
+        { "role": "user", "content": "Explain RAG in three sentences." }
+      ],
+      "temperature": 0.3,
+      "max_tokens": 256
+    }
+  },
+  "response": {
+    "id": "chatcmpl-wanapis-9f2c1c",
+    "object": "chat.completion",
+    "created": 1748381400,
+    "model": "claude-opus-4-7",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Retrieval-Augmented Generation (RAG) pairs a large language model with an external knowledge store, retrieving relevant passages at query time. Those passages are concatenated into the prompt so the model grounds its answer in fresh, source-of-truth data rather than only its training corpus. The result is a system that can cite, update, and constrain its outputs without retraining the underlying model."
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 42,
+      "completion_tokens": 88,
+      "total_tokens": 130
+    }
+  }
+}

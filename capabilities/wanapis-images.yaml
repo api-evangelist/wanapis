@@ -1,0 +1,120 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WanAPIs API — Images
+  description: 'WanAPIs API — Images. 2 operations: image generation and image edits. Long-running jobs return a task_id (see Tasks capability).'
+  tags:
+  - WanAPIs
+  - Images
+  - Multimodal
+  created: '2026-05-27'
+  modified: '2026-05-27'
+binds:
+- namespace: env
+  keys:
+    WANAPIS_API_KEY: WANAPIS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wanapis-images
+    baseUri: https://api.wanapis.com/v1
+    description: WanAPIs API — Images business capability.
+    resources:
+    - name: images-generations
+      path: /images/generations
+      operations:
+      - name: createimage
+        method: POST
+        description: Generate an image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: images-edits
+      path: /images/edits
+      operations:
+      - name: editimage
+        method: POST
+        description: Edit an image
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Multipart form (image, mask, prompt, ...).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.WANAPIS_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: wanapis-images-rest
+    port: 8080
+    description: REST adapter for WanAPIs API — Images.
+    resources:
+    - path: /v1/images/generations
+      name: images-generations
+      description: REST surface for image generation.
+      operations:
+      - method: POST
+        name: createimage
+        description: Generate an image
+        call: wanapis-images.createimage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/images/edits
+      name: images-edits
+      description: REST surface for image edits.
+      operations:
+      - method: POST
+        name: editimage
+        description: Edit an image
+        call: wanapis-images.editimage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wanapis-images-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WanAPIs API — Images.
+    tools:
+    - name: create-image
+      description: Generate an image
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wanapis-images.createimage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: edit-image
+      description: Edit an image
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wanapis-images.editimage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

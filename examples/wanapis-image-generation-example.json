@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.wanapis.com/v1/images/generations",
+    "headers": {
+      "Authorization": "Bearer sk-wanapis-REDACTED",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "model": "dall-e-3",
+      "prompt": "A vintage technical schematic of an API gateway, black and white linework, parchment background.",
+      "size": "1024x1024",
+      "quality": "hd",
+      "style": "natural",
+      "n": 1,
+      "response_format": "url"
+    }
+  },
+  "response": {
+    "created": 1748381500,
+    "data": [
+      {
+        "url": "https://cdn.wanapis.com/images/2026-05-27/wanapis-img-7c3a.png",
+        "revised_prompt": "A finely engraved black-and-white technical schematic of an API gateway on parchment, isometric perspective with annotation callouts."
+      }
+    ]
+  }
+}

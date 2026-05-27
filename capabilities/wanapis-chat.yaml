@@ -1,0 +1,78 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WanAPIs API — Chat
+  description: 'WanAPIs API — Chat. 1 operation. Lead operation: Create chat completion. Self-contained Naftiko capability covering the OpenAI-compatible /chat/completions surface.'
+  tags:
+  - WanAPIs
+  - Chat
+  - OpenAI Compatible
+  created: '2026-05-27'
+  modified: '2026-05-27'
+binds:
+- namespace: env
+  keys:
+    WANAPIS_API_KEY: WANAPIS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wanapis-chat
+    baseUri: https://api.wanapis.com/v1
+    description: WanAPIs API — Chat business capability. Self-contained, no shared references.
+    resources:
+    - name: chat-completions
+      path: /chat/completions
+      operations:
+      - name: createchatcompletion
+        method: POST
+        description: Create chat completion
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.WANAPIS_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: wanapis-chat-rest
+    port: 8080
+    description: REST adapter for WanAPIs API — Chat. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/chat/completions
+      name: chat-completions
+      description: REST surface for chat-completions.
+      operations:
+      - method: POST
+        name: createchatcompletion
+        description: Create chat completion
+        call: wanapis-chat.createchatcompletion
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wanapis-chat-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WanAPIs API — Chat. One tool per consumed operation.
+    tools:
+    - name: create-chat-completion
+      description: Create chat completion
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wanapis-chat.createchatcompletion
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

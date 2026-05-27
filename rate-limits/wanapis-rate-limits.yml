@@ -1,0 +1,55 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: WanAPIs
+providerId: wanapis
+created: '2026-05-27'
+modified: '2026-05-27'
+reconciled: false
+tags:
+  - Rate Limiting
+  - Quota
+  - AI Gateway
+description: |
+  WanAPIs documents per-project quota controls and a 429 throttling response,
+  but does not publish numeric per-minute or per-day rate limits in its
+  public docs. Effective ceilings are governed by (a) the per-project quota
+  configured in the dashboard, (b) the remaining account balance under the
+  pay-as-you-go pricing model, and (c) upstream provider rate limits passed
+  through by the selected channel. Marked `reconciled: false` until WanAPIs
+  publishes explicit numeric ceilings.
+sources:
+  - https://wanapis.com/docs
+  - https://wanapis.com/pricing
+headers: {}
+responseCodes:
+  throttled: 429
+  upstreamFailure: 503
+limits:
+  - name: Per-project quota
+    scope: project
+    metric: quota_units_or_usd
+    limit: configurable per project in the WanAPIs dashboard
+    timeFrame: usage
+  - name: Account balance
+    scope: account
+    metric: usd_balance
+    limit: must be > 0 to issue requests
+    timeFrame: usage
+  - name: Per-key concurrency
+    scope: key
+    metric: in_flight_requests
+    limit: model-dependent — exact ceiling not published
+    timeFrame: instantaneous
+  - name: Upstream passthrough
+    scope: model
+    metric: varies
+    limit: passes through to upstream provider rate limits
+    timeFrame: varies
+guidance:
+  - status: 429
+    action: Reduce concurrency, batch requests, or switch to a less-saturated channel/model.
+  - status: 503
+    action: WanAPIs may auto-failover; clients should retry idempotent requests with exponential backoff.
+  - status: 500-504
+    action: Treat as upstream failure; retry with backoff (2s, 4s, 8s, ...).

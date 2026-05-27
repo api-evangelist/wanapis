@@ -1,0 +1,642 @@
+openapi: 3.1.0
+info:
+  title: WanAPIs Unified AI API
+  version: '2026-05-27'
+  summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
+  description: |
+    WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
+    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
+    platform routes them to the appropriate upstream model provider (OpenAI,
+    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
+    Midjourney, etc.) and applies per-project quota, metering, channel
+    routing, and failover.
+
+    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
+    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
+    admin dashboard. Operations included here are taken from
+    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
+    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
+    async task patterns. Request and response schemas mirror the OpenAI HTTP
+    API by convention; consult the upstream OpenAI reference for full field
+    semantics.
+  termsOfService: https://wanapis.com/
+  contact:
+    name: WanAPIs Support
+    email: support@wanapis.com
+    url: https://wanapis.com/
+  license:
+    name: Proprietary
+    url: https://wanapis.com/
+servers:
+  - url: https://api.wanapis.com/v1
+    description: WanAPIs production OpenAI-compatible base URL.
+tags:
+  - name: Chat
+    description: Chat completion endpoints (OpenAI Chat Completions compatible).
+  - name: Responses
+    description: WanAPIs Responses API for structured, multi-step model workflows.
+  - name: Completions
+    description: Legacy text completions (OpenAI compatible).
+  - name: Embeddings
+    description: Vector embeddings (OpenAI compatible).
+  - name: Images
+    description: Image generation and editing.
+  - name: Audio
+    description: Text-to-speech, transcription, and translation.
+  - name: Models
+    description: Discover the models available in the marketplace.
+  - name: Tasks
+    description: Async task polling for long-running image/video/audio jobs.
+security:
+  - bearerAuth: []
+paths:
+  /chat/completions:
+    post:
+      tags: [Chat]
+      operationId: createChatCompletion
+      summary: Create a chat completion
+      description: |
+        OpenAI-compatible chat completions. Set `model` to any model slug
+        available in the WanAPIs marketplace (e.g. `claude-opus-4-7`,
+        `deepseek-v4-pro`, `gemini-3.5-flash`, `gpt-5.5`).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              deepseek:
+                summary: DeepSeek chat completion
+                value:
+                  model: deepseek-v4-pro
+                  messages:
+                    - role: user
+                      content: 用三句话解释 RAG
+      responses:
+        '200':
+          description: Chat completion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-Sent Events stream of `ChatCompletionChunk` objects when `stream: true`.
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /responses:
+    post:
+      tags: [Responses]
+      operationId: createResponse
+      summary: Create a Response (WanAPIs Responses API)
+      description: |
+        WanAPIs-native Responses endpoint for structured, multi-step workflows.
+        Compatible with the OpenAI Responses API. Accepts an `input` string or
+        message array plus optional tool configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseRequest'
+            examples:
+              gpt:
+                summary: Diagnose a log
+                value:
+                  model: gpt-5.5
+                  input: 分析这段日志并给出排障步骤
+      responses:
+        '200':
+          description: Response object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /completions:
+    post:
+      tags: [Completions]
+      operationId: createCompletion
+      summary: Create a (legacy) text completion
+      description: OpenAI-compatible legacy completions endpoint. Prefer `/chat/completions` for new development.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionRequest'
+      responses:
+        '200':
+          description: Completion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /embeddings:
+    post:
+      tags: [Embeddings]
+      operationId: createEmbedding
+      summary: Create embeddings
+      description: OpenAI-compatible embeddings endpoint. Supports OpenAI, Voyage, BGE, and other embedding models available in the marketplace.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddingRequest'
+      responses:
+        '200':
+          description: Embedding vectors.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddingResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /images/generations:
+    post:
+      tags: [Images]
+      operationId: createImage
+      summary: Generate an image
+      description: |
+        Generate images from a text prompt. OpenAI-compatible shape. WanAPIs
+        routes the request to the selected image model (DALL·E, Stable
+        Diffusion, Midjourney-compatible endpoints, etc.). Long-running jobs
+        return a task ID — see `/tasks/{task_id}`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Image generation result (sync or async task handle).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /images/edits:
+    post:
+      tags: [Images]
+      operationId: editImage
+      summary: Edit an image
+      description: Apply an edit to a supplied image using a text prompt and optional mask. Multipart form upload, OpenAI-compatible.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageEditRequest'
+      responses:
+        '200':
+          description: Edited image (sync or async task handle).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /audio/speech:
+    post:
+      tags: [Audio]
+      operationId: createSpeech
+      summary: Synthesize speech from text
+      description: OpenAI-compatible TTS endpoint. Returns binary audio.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeechRequest'
+      responses:
+        '200':
+          description: Audio bytes.
+          content:
+            audio/mpeg: { schema: { type: string, format: binary } }
+            audio/wav:  { schema: { type: string, format: binary } }
+            audio/opus: { schema: { type: string, format: binary } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /audio/transcriptions:
+    post:
+      tags: [Audio]
+      operationId: createTranscription
+      summary: Transcribe audio to text
+      description: OpenAI-compatible audio transcription (e.g. Whisper-class models). Multipart form upload.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TranscriptionRequest'
+      responses:
+        '200':
+          description: Transcription result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranscriptionResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /audio/translations:
+    post:
+      tags: [Audio]
+      operationId: createTranslation
+      summary: Translate audio to English text
+      description: OpenAI-compatible audio translation. Multipart form upload.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TranscriptionRequest'
+      responses:
+        '200':
+          description: Translation result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranscriptionResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/UpstreamFailure' }
+  /models:
+    get:
+      tags: [Models]
+      operationId: listModels
+      summary: List available models
+      description: List all models in the WanAPIs marketplace available to the caller's project/key.
+      responses:
+        '200':
+          description: A list of model objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /models/{model}:
+    get:
+      tags: [Models]
+      operationId: getModel
+      summary: Retrieve a model
+      description: Retrieve a single model by ID/slug.
+      parameters:
+        - in: path
+          name: model
+          required: true
+          schema: { type: string }
+          description: Model ID (e.g. `claude-opus-4-7`, `deepseek-v4-pro`).
+      responses:
+        '200':
+          description: Model object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /tasks/{task_id}:
+    get:
+      tags: [Tasks]
+      operationId: getTask
+      summary: Poll an async task
+      description: |
+        Poll the status of an async task created by long-running image, video,
+        or audio generation. WanAPIs documents asynchronous task support with
+        polling by task ID and optional webhook callbacks — exact field names
+        may vary per upstream provider.
+      parameters:
+        - in: path
+          name: task_id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Task status and (if completed) result payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: |
+        Authenticate every request with `Authorization: Bearer <wanapis_api_key>`.
+        Keys are issued per project in the WanAPIs dashboard and may be scoped
+        with quota and model availability.
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Forbidden:
+      description: Key does not have access to the requested model or feature.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    RateLimited:
+      description: Rate limit or quota exceeded.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    UpstreamFailure:
+      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message: { type: string }
+            type:    { type: string }
+            code:    { type: string }
+            param:   { type: string, nullable: true }
+    ChatMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [system, user, assistant, tool]
+        content:
+          oneOf:
+            - { type: string }
+            - { type: array, items: { type: object } }
+        name:
+          type: string
+        tool_call_id:
+          type: string
+        tool_calls:
+          type: array
+          items: { type: object }
+    ChatCompletionRequest:
+      type: object
+      required: [model, messages]
+      properties:
+        model: { type: string, description: 'Marketplace model slug (e.g. claude-opus-4-7).' }
+        messages:
+          type: array
+          items: { $ref: '#/components/schemas/ChatMessage' }
+        stream:      { type: boolean, default: false }
+        max_tokens:  { type: integer }
+        temperature: { type: number, minimum: 0, maximum: 2 }
+        top_p:       { type: number, minimum: 0, maximum: 1 }
+        n:           { type: integer, default: 1 }
+        stop:
+          oneOf:
+            - { type: string }
+            - { type: array, items: { type: string } }
+        presence_penalty:  { type: number }
+        frequency_penalty: { type: number }
+        seed:              { type: integer }
+        response_format:   { type: object }
+        tools:
+          type: array
+          items: { type: object }
+        tool_choice:
+          oneOf:
+            - { type: string }
+            - { type: object }
+        user: { type: string }
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:       { type: string }
+        object:   { type: string, const: chat.completion }
+        created:  { type: integer }
+        model:    { type: string }
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:   { type: integer }
+              message: { $ref: '#/components/schemas/ChatMessage' }
+              finish_reason: { type: string }
+        usage:
+          $ref: '#/components/schemas/Usage'
+    ResponseRequest:
+      type: object
+      required: [model, input]
+      properties:
+        model: { type: string }
+        input:
+          oneOf:
+            - { type: string }
+            - { type: array, items: { type: object } }
+        instructions: { type: string }
+        tools:
+          type: array
+          items: { type: object }
+        stream: { type: boolean, default: false }
+        metadata: { type: object }
+    ResponseObject:
+      type: object
+      properties:
+        id:      { type: string }
+        object:  { type: string, const: response }
+        created: { type: integer }
+        model:   { type: string }
+        output:
+          type: array
+          items: { type: object }
+        usage: { $ref: '#/components/schemas/Usage' }
+    CompletionRequest:
+      type: object
+      required: [model, prompt]
+      properties:
+        model:  { type: string }
+        prompt:
+          oneOf:
+            - { type: string }
+            - { type: array, items: { type: string } }
+        max_tokens:  { type: integer }
+        temperature: { type: number }
+        top_p:       { type: number }
+        n:           { type: integer }
+        stream:      { type: boolean }
+        stop:
+          oneOf:
+            - { type: string }
+            - { type: array, items: { type: string } }
+    CompletionResponse:
+      type: object
+      properties:
+        id:      { type: string }
+        object:  { type: string, const: text_completion }
+        created: { type: integer }
+        model:   { type: string }
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              text:          { type: string }
+              index:         { type: integer }
+              finish_reason: { type: string }
+        usage: { $ref: '#/components/schemas/Usage' }
+    EmbeddingRequest:
+      type: object
+      required: [model, input]
+      properties:
+        model: { type: string }
+        input:
+          oneOf:
+            - { type: string }
+            - { type: array, items: { type: string } }
+            - { type: array, items: { type: array, items: { type: integer } } }
+        encoding_format:
+          type: string
+          enum: [float, base64]
+          default: float
+        dimensions: { type: integer }
+        user:       { type: string }
+    EmbeddingResponse:
+      type: object
+      properties:
+        object: { type: string, const: list }
+        model:  { type: string }
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              object:    { type: string, const: embedding }
+              index:     { type: integer }
+              embedding: { type: array, items: { type: number } }
+        usage: { $ref: '#/components/schemas/Usage' }
+    ImageGenerationRequest:
+      type: object
+      required: [model, prompt]
+      properties:
+        model:    { type: string }
+        prompt:   { type: string }
+        n:        { type: integer, default: 1 }
+        size:     { type: string, description: 'e.g. 1024x1024' }
+        quality:  { type: string, enum: [standard, hd] }
+        style:    { type: string, enum: [vivid, natural] }
+        response_format: { type: string, enum: [url, b64_json] }
+        user:     { type: string }
+    ImageEditRequest:
+      type: object
+      required: [model, image, prompt]
+      properties:
+        model:  { type: string }
+        image:  { type: string, format: binary }
+        mask:   { type: string, format: binary }
+        prompt: { type: string }
+        n:      { type: integer }
+        size:   { type: string }
+        response_format: { type: string, enum: [url, b64_json] }
+    ImageResponse:
+      type: object
+      properties:
+        created: { type: integer }
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              url:      { type: string }
+              b64_json: { type: string }
+              revised_prompt: { type: string }
+        task_id:
+          type: string
+          description: Present when the upstream model runs the job asynchronously; poll via `/tasks/{task_id}`.
+    SpeechRequest:
+      type: object
+      required: [model, input, voice]
+      properties:
+        model: { type: string }
+        input: { type: string }
+        voice: { type: string }
+        response_format:
+          type: string
+          enum: [mp3, opus, aac, flac, wav, pcm]
+          default: mp3
+        speed: { type: number }
+    TranscriptionRequest:
+      type: object
+      required: [model, file]
+      properties:
+        model:           { type: string }
+        file:            { type: string, format: binary }
+        language:        { type: string }
+        prompt:          { type: string }
+        response_format: { type: string, enum: [json, text, srt, verbose_json, vtt] }
+        temperature:     { type: number }
+    TranscriptionResponse:
+      type: object
+      properties:
+        text: { type: string }
+        language: { type: string }
+        duration: { type: number }
+        segments: { type: array, items: { type: object } }
+    Model:
+      type: object
+      properties:
+        id:       { type: string }
+        object:   { type: string, const: model }
+        created:  { type: integer }
+        owned_by: { type: string, description: Upstream vendor (openai, anthropic, google, deepseek, ...). }
+        pricing:
+          type: object
+          description: Per-token (or per-call) pricing in USD, when surfaced by WanAPIs.
+          properties:
+            input:  { type: number }
+            output: { type: number }
+            unit:   { type: string, description: 'e.g. per_million_tokens' }
+    ModelList:
+      type: object
+      properties:
+        object: { type: string, const: list }
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Model' }
+    Task:
+      type: object
+      properties:
+        id:      { type: string }
+        status:  { type: string, enum: [pending, running, succeeded, failed, cancelled] }
+        created: { type: integer }
+        model:   { type: string }
+        result:  { type: object, description: Populated when status is `succeeded`. }
+        error:   { $ref: '#/components/schemas/Error' }
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:     { type: integer }
+        completion_tokens: { type: integer }
+        total_tokens:      { type: integer }
