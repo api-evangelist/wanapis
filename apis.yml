@@ -53,7 +53,7 @@ common:
     url: https://wanapis.com/model
   - type: Pricing
     url: https://wanapis.com/pricing
-  - type: SignUp
+  - type: Signup
     url: https://wanapis.com/auth
 maintainers:
   - FN: Kin Lane
