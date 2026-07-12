@@ -45,6 +45,8 @@ apis:
         email: support@wanapis.com
         url: https://wanapis.com/
 common:
+  - type: DomainSecurity
+    url: security/wanapis-domain-security.yml
   - type: Website
     url: https://wanapis.com/
   - type: Documentation

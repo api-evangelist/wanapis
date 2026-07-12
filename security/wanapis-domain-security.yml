@@ -1,0 +1,21 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: wanapis.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 30 06:59:43 2026 GMT
+  hsts: false
+- host: api.wanapis.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 30 06:59:43 2026 GMT
+  hsts: false
+domains:
+- domain: wanapis.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine
