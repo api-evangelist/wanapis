@@ -37,7 +37,7 @@ terms:
   - term: Project
     description: Logical grouping of keys, quotas, and model availability inside a WanAPIs account.
   - term: API Key
-    description: Bearer credential issued per project, sent as `Authorization: Bearer <key>`.
+    description: "Bearer credential issued per project, sent as `Authorization: Bearer <key>`."
   - term: Task
     description: An async job (image, video, audio) identified by a task_id; polled via /tasks/{task_id} or delivered via webhook callback.
   - term: Webhook Callback
