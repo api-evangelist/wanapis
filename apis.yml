@@ -35,27 +35,110 @@ tags:
   - Routing
   - Failover
 apis:
-  - name: WanAPIs Unified AI API
-    description: OpenAI-compatible REST API gateway aggregating GPT, Claude, Gemini, DeepSeek, plus image, video, and audio model providers behind a single key and routing/failover layer. Model marketplace, usage logs, quota management, and transparent metering.
-    humanURL: https://wanapis.com/
-    baseURL: https://api.wanapis.com/v1
-    tags:
-      - LLM Gateway
-      - OpenAI Compatible
-      - Multi-Provider
-    properties:
-      - type: Documentation
-        url: https://wanapis.com/docs
-      - type: ModelMarketplace
-        url: https://wanapis.com/model
-      - type: Pricing
-        url: https://wanapis.com/pricing
-      - type: Signup
-        url: https://wanapis.com/auth
-    contact:
-      - FN: WanAPIs Support
-        email: support@wanapis.com
-        url: https://wanapis.com/
+- name: WanAPIs Unified AI API
+  description: >-
+    OpenAI-compatible REST API gateway aggregating GPT, Claude, Gemini, DeepSeek, plus image, video, and
+    audio model providers behind a single key and routing/failover layer. Model marketplace, usage logs,
+    quota management, and transparent metering.
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - LLM Gateway
+  - OpenAI Compatible
+  - Multi-Provider
+  properties:
+  - type: Documentation
+    url: https://wanapis.com/docs
+  - type: ModelMarketplace
+    url: https://wanapis.com/model
+  - type: Pricing
+    url: https://wanapis.com/pricing
+  - type: Signup
+    url: https://wanapis.com/auth
+  contact:
+  - FN: WanAPIs Support
+    email: support@wanapis.com
+    url: https://wanapis.com/
+- aid: wanapis:wanapis-audio-api
+  name: WanAPIs Audio API
+  description: Text-to-speech, transcription, and translation.
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Audio
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-audio-api-openapi.yml
+- aid: wanapis:wanapis-chat-api
+  name: WanAPIs Chat API
+  description: Chat completion endpoints (OpenAI Chat Completions compatible).
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-chat-api-openapi.yml
+- aid: wanapis:wanapis-completions-api
+  name: WanAPIs Completions API
+  description: Legacy text completions (OpenAI compatible).
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Completions
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-completions-api-openapi.yml
+- aid: wanapis:wanapis-embeddings-api
+  name: WanAPIs Embeddings API
+  description: Vector embeddings (OpenAI compatible).
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Embeddings
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-embeddings-api-openapi.yml
+- aid: wanapis:wanapis-images-api
+  name: WanAPIs Images API
+  description: Image generation and editing.
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Images
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-images-api-openapi.yml
+- aid: wanapis:wanapis-models-api
+  name: WanAPIs Models API
+  description: Discover the models available in the marketplace.
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-models-api-openapi.yml
+- aid: wanapis:wanapis-responses-api
+  name: WanAPIs Responses API
+  description: WanAPIs Responses API for structured, multi-step model workflows.
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Responses
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-responses-api-openapi.yml
+- aid: wanapis:wanapis-tasks-api
+  name: WanAPIs Tasks API
+  description: Async task polling for long-running image/video/audio jobs.
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Tasks
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-tasks-api-openapi.yml
 common:
   - type: DomainSecurity
     url: security/wanapis-domain-security.yml
