@@ -1,0 +1,266 @@
+openapi: 3.2.0
+info:
+  title: WanAPIs Unified AI Chat API
+  version: '2026-05-27'
+  summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
+  description: 'WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
+
+    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
+
+    platform routes them to the appropriate upstream model provider (OpenAI,
+
+    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
+
+    Midjourney, etc.) and applies per-project quota, metering, channel
+
+    routing, and failover.
+
+
+    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
+
+    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
+
+    admin dashboard. Operations included here are taken from
+
+    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
+
+    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
+
+    async task patterns. Request and response schemas mirror the OpenAI HTTP
+
+    API by convention; consult the upstream OpenAI reference for full field
+
+    semantics.
+
+    '
+  termsOfService: https://wanapis.com/
+  contact:
+    name: WanAPIs Support
+    email: support@wanapis.com
+    url: https://wanapis.com/
+  license:
+    name: Proprietary
+    url: https://wanapis.com/
+servers:
+- url: https://api.wanapis.com/v1
+  description: WanAPIs production OpenAI-compatible base URL.
+security:
+- bearerAuth: []
+tags:
+- name: Chat
+  description: Chat completion endpoints (OpenAI Chat Completions compatible).
+paths:
+  /chat/completions:
+    post:
+      tags:
+      - Chat
+      operationId: createChatCompletion
+      summary: Create a chat completion
+      description: 'OpenAI-compatible chat completions. Set `model` to any model slug
+
+        available in the WanAPIs marketplace (e.g. `claude-opus-4-7`,
+
+        `deepseek-v4-pro`, `gemini-3.5-flash`, `gpt-5.5`).
+
+        '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              deepseek:
+                summary: DeepSeek chat completion
+                value:
+                  model: deepseek-v4-pro
+                  messages:
+                  - role: user
+                    content: 用三句话解释 RAG
+      responses:
+        '200':
+          description: Chat completion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+            text/event-stream:
+              schema:
+                type: string
+                description: 'Server-Sent Events stream of `ChatCompletionChunk` objects when `stream: true`.'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/UpstreamFailure'
+components:
+  schemas:
+    ChatCompletionRequest:
+      type: object
+      required:
+      - model
+      - messages
+      properties:
+        model:
+          type: string
+          description: Marketplace model slug (e.g. claude-opus-4-7).
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        stream:
+          type: boolean
+          default: false
+        max_tokens:
+          type: integer
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 1
+        n:
+          type: integer
+          default: 1
+        stop:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        seed:
+          type: integer
+        response_format:
+          type: object
+        tools:
+          type: array
+          items:
+            type: object
+        tool_choice:
+          oneOf:
+          - type: string
+          - type: object
+        user:
+          type: string
+    ChatMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+          - tool
+        content:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: object
+        name:
+          type: string
+        tool_call_id:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            type: object
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          const: chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/ChatMessage'
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit or quota exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UpstreamFailure:
+      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Key does not have access to the requested model or feature.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: 'Authenticate every request with `Authorization: Bearer <wanapis_api_key>`.
+
+        Keys are issued per project in the WanAPIs dashboard and may be scoped
+
+        with quota and model availability.
+
+        '

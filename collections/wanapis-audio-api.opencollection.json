@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WanAPIs Unified AI Audio API",
+    "version": "2026-05-27"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Audio",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Synthesize speech from text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wanapis.com/v1/audio/speech",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OpenAI-compatible TTS endpoint. Returns binary audio."
+        },
+        {
+          "info": {
+            "name": "Transcribe audio to text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wanapis.com/v1/audio/transcriptions",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "OpenAI-compatible audio transcription (e.g. Whisper-class models). Multipart form upload."
+        },
+        {
+          "info": {
+            "name": "Translate audio to English text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wanapis.com/v1/audio/translations",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "OpenAI-compatible audio translation. Multipart form upload."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,362 @@
+{
+  "item": [
+    {
+      "id": "65f4e089-11dc-4ae1-b373-06d7c795772f",
+      "name": "Models",
+      "description": {
+        "content": "Discover the models available in the marketplace.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "47023e10-3867-4cf0-a8e3-344b8ce20491",
+          "name": "List available models",
+          "request": {
+            "name": "List available models",
+            "description": {
+              "content": "List all models in the WanAPIs marketplace available to the caller's project/key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81a0ae32-ef56-45c7-bee8-a20450a03d06",
+              "name": "A list of model objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"string\",\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"object\": \"string\",\n      \"created\": 8030,\n      \"owned_by\": \"string\",\n      \"pricing\": {\n        \"input\": 4801.143251859297,\n        \"output\": 8399.613609705972,\n        \"unit\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"object\": \"string\",\n      \"created\": 583,\n      \"owned_by\": \"string\",\n      \"pricing\": {\n        \"input\": 2938.0663176191024,\n        \"output\": 1240.0557863697127,\n        \"unit\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c55aedc9-abe0-4323-b8be-54779c8063a5",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8940194a-a619-4ad5-81fb-4fcf3f114e05",
+          "name": "Retrieve a model",
+          "request": {
+            "name": "Retrieve a model",
+            "description": {
+              "content": "Retrieve a single model by ID/slug.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "models",
+                ":model"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "model",
+                  "description": "(Required) Model ID (e.g. `claude-opus-4-7`, `deepseek-v4-pro`)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3d1d6dea-d866-4ea1-b257-a424590a71bf",
+              "name": "Model object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "models",
+                    ":model"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model",
+                      "description": "(Required) Model ID (e.g. `claude-opus-4-7`, `deepseek-v4-pro`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"object\": \"string\",\n  \"created\": 9447,\n  \"owned_by\": \"string\",\n  \"pricing\": {\n    \"input\": 5561.929653145146,\n    \"output\": 5647.667442430021,\n    \"unit\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bff3e9b4-8496-48c5-977f-4978a39e11e0",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "models",
+                    ":model"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model",
+                      "description": "(Required) Model ID (e.g. `claude-opus-4-7`, `deepseek-v4-pro`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60702061-9ab8-4072-a4e1-ed7e376324f9",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "models",
+                    ":model"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model",
+                      "description": "(Required) Model ID (e.g. `claude-opus-4-7`, `deepseek-v4-pro`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.wanapis.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "02108eb7-cc04-4c17-bb01-f4d82eb26403",
+    "name": "WanAPIs Unified AI Models API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients\nissue OpenAI-style requests against `https://api.wanapis.com/v1`; the\nplatform routes them to the appropriate upstream model provider (OpenAI,\nAnthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,\nMidjourney, etc.) and applies per-project quota, metering, channel\nrouting, and failover.\n\nThis OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no\nmachine-readable spec — `https://api.wanapis.com/openapi.json` returns the\nadmin dashboard. Operations included here are taken from\nhttps://wanapis.com/docs and https://wanapis.com/pricing and reflect the\nOpenAI-compatible surface plus the documented WanAPIs `/responses` and\nasync task patterns. Request and response schemas mirror the OpenAI HTTP\nAPI by convention; consult the upstream OpenAI reference for full field\nsemantics.\n\n\nContact Support:\n Name: WanAPIs Support\n Email: support@wanapis.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "item": [
+    {
+      "id": "551e6ce6-4235-4324-a188-2fc28b1cb4f9",
+      "name": "Tasks",
+      "description": {
+        "content": "Async task polling for long-running image/video/audio jobs.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "79408ecf-8f4e-4465-b22a-cf708c21eb91",
+          "name": "Poll an async task",
+          "request": {
+            "name": "Poll an async task",
+            "description": {
+              "content": "Poll the status of an async task created by long-running image, video,\nor audio generation. WanAPIs documents asynchronous task support with\npolling by task ID and optional webhook callbacks — exact field names\nmay vary per upstream provider.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f5be94bc-e076-41ba-9867-eceb2ab86f9d",
+              "name": "Task status and (if completed) result payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"running\",\n  \"created\": 9183,\n  \"model\": \"string\",\n  \"result\": {},\n  \"error\": {\n    \"error\": {\n      \"message\": \"string\",\n      \"type\": \"string\",\n      \"code\": \"string\",\n      \"param\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "793a2a00-05c0-4a29-b6fc-81961a30e9d8",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26b437e0-e447-4bb5-9377-5c4317a03d38",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.wanapis.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ab5f115c-3411-4bf9-93d2-7144e194db4e",
+    "name": "WanAPIs Unified AI Tasks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients\nissue OpenAI-style requests against `https://api.wanapis.com/v1`; the\nplatform routes them to the appropriate upstream model provider (OpenAI,\nAnthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,\nMidjourney, etc.) and applies per-project quota, metering, channel\nrouting, and failover.\n\nThis OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no\nmachine-readable spec — `https://api.wanapis.com/openapi.json` returns the\nadmin dashboard. Operations included here are taken from\nhttps://wanapis.com/docs and https://wanapis.com/pricing and reflect the\nOpenAI-compatible surface plus the documented WanAPIs `/responses` and\nasync task patterns. Request and response schemas mirror the OpenAI HTTP\nAPI by convention; consult the upstream OpenAI reference for full field\nsemantics.\n\n\nContact Support:\n Name: WanAPIs Support\n Email: support@wanapis.com",
+      "type": "text/plain"
+    }
+  }
+}

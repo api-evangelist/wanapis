@@ -1,0 +1,173 @@
+openapi: 3.2.0
+info:
+  title: WanAPIs Unified AI Models API
+  version: '2026-05-27'
+  summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
+  description: 'WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
+
+    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
+
+    platform routes them to the appropriate upstream model provider (OpenAI,
+
+    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
+
+    Midjourney, etc.) and applies per-project quota, metering, channel
+
+    routing, and failover.
+
+
+    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
+
+    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
+
+    admin dashboard. Operations included here are taken from
+
+    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
+
+    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
+
+    async task patterns. Request and response schemas mirror the OpenAI HTTP
+
+    API by convention; consult the upstream OpenAI reference for full field
+
+    semantics.
+
+    '
+  termsOfService: https://wanapis.com/
+  contact:
+    name: WanAPIs Support
+    email: support@wanapis.com
+    url: https://wanapis.com/
+  license:
+    name: Proprietary
+    url: https://wanapis.com/
+servers:
+- url: https://api.wanapis.com/v1
+  description: WanAPIs production OpenAI-compatible base URL.
+security:
+- bearerAuth: []
+tags:
+- name: Models
+  description: Discover the models available in the marketplace.
+paths:
+  /models:
+    get:
+      tags:
+      - Models
+      operationId: listModels
+      summary: List available models
+      description: List all models in the WanAPIs marketplace available to the caller's project/key.
+      responses:
+        '200':
+          description: A list of model objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /models/{model}:
+    get:
+      tags:
+      - Models
+      operationId: getModel
+      summary: Retrieve a model
+      description: Retrieve a single model by ID/slug.
+      parameters:
+      - in: path
+        name: model
+        required: true
+        schema:
+          type: string
+        description: Model ID (e.g. `claude-opus-4-7`, `deepseek-v4-pro`).
+      responses:
+        '200':
+          description: Model object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          const: model
+        created:
+          type: integer
+        owned_by:
+          type: string
+          description: Upstream vendor (openai
+          anthropic: null
+          google: null
+          deepseek: null
+          '...).': null
+        pricing:
+          type: object
+          description: Per-token (or per-call) pricing in USD, when surfaced by WanAPIs.
+          properties:
+            input:
+              type: number
+            output:
+              type: number
+            unit:
+              type: string
+              description: e.g. per_million_tokens
+    ModelList:
+      type: object
+      properties:
+        object:
+          type: string
+          const: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: 'Authenticate every request with `Authorization: Bearer <wanapis_api_key>`.
+
+        Keys are issued per project in the WanAPIs dashboard and may be scoped
+
+        with quota and model availability.
+
+        '

@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WanAPIs Unified AI Tasks API",
+    "version": "2026-05-27"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Poll an async task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wanapis.com/v1/tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Poll the status of an async task created by long-running image, video,\nor audio generation. WanAPIs documents asynchronous task support with\npolling by task ID and optional webhook callbacks — exact field names\nmay vary per upstream provider.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

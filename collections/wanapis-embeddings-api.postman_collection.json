@@ -1,0 +1,293 @@
+{
+  "item": [
+    {
+      "id": "28aa6b34-a80d-457b-bcb8-661c9f9db61c",
+      "name": "Embeddings",
+      "description": {
+        "content": "Vector embeddings (OpenAI compatible).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3c65e0c0-8ace-457b-966a-a6a49478c66b",
+          "name": "Create embeddings",
+          "request": {
+            "name": "Create embeddings",
+            "description": {
+              "content": "OpenAI-compatible embeddings endpoint. Supports OpenAI, Voyage, BGE, and other embedding models available in the marketplace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "embeddings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"input\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ba760588-1055-48a1-8589-1f8d3acc4801",
+              "name": "Embedding vectors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "embeddings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"<string>\",\n  \"input\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"string\",\n  \"model\": \"string\",\n  \"data\": [\n    {\n      \"object\": \"string\",\n      \"index\": 4634,\n      \"embedding\": [\n        4547.8184708832105,\n        6775.970465777064\n      ]\n    },\n    {\n      \"object\": \"string\",\n      \"index\": 4188,\n      \"embedding\": [\n        8482.540492537622,\n        7666.222438309661\n      ]\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 6831,\n    \"completion_tokens\": 7652,\n    \"total_tokens\": 718\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9af575c9-e0d4-4a10-a050-a6d457ed7ffc",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "embeddings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"<string>\",\n  \"input\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1b82347-c2ed-40dd-88ff-c5eadea9dc14",
+              "name": "Rate limit or quota exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "embeddings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"<string>\",\n  \"input\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "245c0efc-e488-42d6-b191-68efdc7a2c04",
+              "name": "Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "embeddings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"<string>\",\n  \"input\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.wanapis.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9be83616-110f-4b72-b3ad-d54bcb9f5f1d",
+    "name": "WanAPIs Unified AI Embeddings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients\nissue OpenAI-style requests against `https://api.wanapis.com/v1`; the\nplatform routes them to the appropriate upstream model provider (OpenAI,\nAnthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,\nMidjourney, etc.) and applies per-project quota, metering, channel\nrouting, and failover.\n\nThis OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no\nmachine-readable spec — `https://api.wanapis.com/openapi.json` returns the\nadmin dashboard. Operations included here are taken from\nhttps://wanapis.com/docs and https://wanapis.com/pricing and reflect the\nOpenAI-compatible surface plus the documented WanAPIs `/responses` and\nasync task patterns. Request and response schemas mirror the OpenAI HTTP\nAPI by convention; consult the upstream OpenAI reference for full field\nsemantics.\n\n\nContact Support:\n Name: WanAPIs Support\n Email: support@wanapis.com",
+      "type": "text/plain"
+    }
+  }
+}

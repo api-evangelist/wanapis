@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WanAPIs Unified AI Responses API",
+    "version": "2026-05-27"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Responses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Response (WanAPIs Responses API)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wanapis.com/v1/responses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "WanAPIs-native Responses endpoint for structured, multi-step workflows.\nCompatible with the OpenAI Responses API. Accepts an `input` string or\nmessage array plus optional tool configuration.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

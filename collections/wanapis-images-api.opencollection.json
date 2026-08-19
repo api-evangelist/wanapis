@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WanAPIs Unified AI Images API",
+    "version": "2026-05-27"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wanapis.com/v1/images/generations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate images from a text prompt. OpenAI-compatible shape. WanAPIs\nroutes the request to the selected image model (DALL·E, Stable\nDiffusion, Midjourney-compatible endpoints, etc.). Long-running jobs\nreturn a task ID — see `/tasks/{task_id}`.\n"
+        },
+        {
+          "info": {
+            "name": "Edit an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.wanapis.com/v1/images/edits",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Apply an edit to a supplied image using a text prompt and optional mask. Multipart form upload, OpenAI-compatible."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

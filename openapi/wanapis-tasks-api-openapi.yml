@@ -1,0 +1,148 @@
+openapi: 3.2.0
+info:
+  title: WanAPIs Unified AI Tasks API
+  version: '2026-05-27'
+  summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
+  description: 'WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
+
+    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
+
+    platform routes them to the appropriate upstream model provider (OpenAI,
+
+    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
+
+    Midjourney, etc.) and applies per-project quota, metering, channel
+
+    routing, and failover.
+
+
+    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
+
+    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
+
+    admin dashboard. Operations included here are taken from
+
+    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
+
+    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
+
+    async task patterns. Request and response schemas mirror the OpenAI HTTP
+
+    API by convention; consult the upstream OpenAI reference for full field
+
+    semantics.
+
+    '
+  termsOfService: https://wanapis.com/
+  contact:
+    name: WanAPIs Support
+    email: support@wanapis.com
+    url: https://wanapis.com/
+  license:
+    name: Proprietary
+    url: https://wanapis.com/
+servers:
+- url: https://api.wanapis.com/v1
+  description: WanAPIs production OpenAI-compatible base URL.
+security:
+- bearerAuth: []
+tags:
+- name: Tasks
+  description: Async task polling for long-running image/video/audio jobs.
+paths:
+  /tasks/{task_id}:
+    get:
+      tags:
+      - Tasks
+      operationId: getTask
+      summary: Poll an async task
+      description: 'Poll the status of an async task created by long-running image, video,
+
+        or audio generation. WanAPIs documents asynchronous task support with
+
+        polling by task ID and optional webhook callbacks — exact field names
+
+        may vary per upstream provider.
+
+        '
+      parameters:
+      - in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Task status and (if completed) result payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - succeeded
+          - failed
+          - cancelled
+        created:
+          type: integer
+        model:
+          type: string
+        result:
+          type: object
+          description: Populated when status is `succeeded`.
+        error:
+          $ref: '#/components/schemas/Error'
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: 'Authenticate every request with `Authorization: Bearer <wanapis_api_key>`.
+
+        Keys are issued per project in the WanAPIs dashboard and may be scoped
+
+        with quota and model availability.
+
+        '

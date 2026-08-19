@@ -1,0 +1,38 @@
+{
+  "provider": "wanapis",
+  "sources": [
+    "wanapis-audio-api-openapi.yml",
+    "wanapis-chat-api-openapi.yml",
+    "wanapis-completions-api-openapi.yml",
+    "wanapis-embeddings-api-openapi.yml",
+    "wanapis-images-api-openapi.yml",
+    "wanapis-models-api-openapi.yml",
+    "wanapis-responses-api-openapi.yml",
+    "wanapis-tasks-api-openapi.yml"
+  ],
+  "outputs": [
+    "wanapis-audio-api-openapi.yml",
+    "wanapis-chat-api-openapi.yml",
+    "wanapis-completions-api-openapi.yml",
+    "wanapis-embeddings-api-openapi.yml",
+    "wanapis-images-api-openapi.yml",
+    "wanapis-models-api-openapi.yml",
+    "wanapis-responses-api-openapi.yml",
+    "wanapis-tasks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "wanapis-audio-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "wanapis-chat-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "wanapis-completions-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "wanapis-embeddings-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "wanapis-images-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "wanapis-models-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "wanapis-responses-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "wanapis-tasks-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

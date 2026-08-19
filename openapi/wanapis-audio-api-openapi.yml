@@ -1,0 +1,250 @@
+openapi: 3.2.0
+info:
+  title: WanAPIs Unified AI Audio API
+  version: '2026-05-27'
+  summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
+  description: 'WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
+
+    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
+
+    platform routes them to the appropriate upstream model provider (OpenAI,
+
+    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
+
+    Midjourney, etc.) and applies per-project quota, metering, channel
+
+    routing, and failover.
+
+
+    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
+
+    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
+
+    admin dashboard. Operations included here are taken from
+
+    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
+
+    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
+
+    async task patterns. Request and response schemas mirror the OpenAI HTTP
+
+    API by convention; consult the upstream OpenAI reference for full field
+
+    semantics.
+
+    '
+  termsOfService: https://wanapis.com/
+  contact:
+    name: WanAPIs Support
+    email: support@wanapis.com
+    url: https://wanapis.com/
+  license:
+    name: Proprietary
+    url: https://wanapis.com/
+servers:
+- url: https://api.wanapis.com/v1
+  description: WanAPIs production OpenAI-compatible base URL.
+security:
+- bearerAuth: []
+tags:
+- name: Audio
+  description: Text-to-speech, transcription, and translation.
+paths:
+  /audio/speech:
+    post:
+      tags:
+      - Audio
+      operationId: createSpeech
+      summary: Synthesize speech from text
+      description: OpenAI-compatible TTS endpoint. Returns binary audio.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeechRequest'
+      responses:
+        '200':
+          description: Audio bytes.
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+            audio/opus:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/UpstreamFailure'
+  /audio/transcriptions:
+    post:
+      tags:
+      - Audio
+      operationId: createTranscription
+      summary: Transcribe audio to text
+      description: OpenAI-compatible audio transcription (e.g. Whisper-class models). Multipart form upload.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TranscriptionRequest'
+      responses:
+        '200':
+          description: Transcription result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranscriptionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/UpstreamFailure'
+  /audio/translations:
+    post:
+      tags:
+      - Audio
+      operationId: createTranslation
+      summary: Translate audio to English text
+      description: OpenAI-compatible audio translation. Multipart form upload.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TranscriptionRequest'
+      responses:
+        '200':
+          description: Translation result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranscriptionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/UpstreamFailure'
+components:
+  schemas:
+    TranscriptionRequest:
+      type: object
+      required:
+      - model
+      - file
+      properties:
+        model:
+          type: string
+        file:
+          type: string
+          format: binary
+        language:
+          type: string
+        prompt:
+          type: string
+        response_format:
+          type: string
+          enum:
+          - json
+          - text
+          - srt
+          - verbose_json
+          - vtt
+        temperature:
+          type: number
+    TranscriptionResponse:
+      type: object
+      properties:
+        text:
+          type: string
+        language:
+          type: string
+        duration:
+          type: number
+        segments:
+          type: array
+          items:
+            type: object
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
+    SpeechRequest:
+      type: object
+      required:
+      - model
+      - input
+      - voice
+      properties:
+        model:
+          type: string
+        input:
+          type: string
+        voice:
+          type: string
+        response_format:
+          type: string
+          enum:
+          - mp3
+          - opus
+          - aac
+          - flac
+          - wav
+          - pcm
+          default: mp3
+        speed:
+          type: number
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit or quota exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UpstreamFailure:
+      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: 'Authenticate every request with `Authorization: Bearer <wanapis_api_key>`.
+
+        Keys are issued per project in the WanAPIs dashboard and may be scoped
+
+        with quota and model availability.
+
+        '

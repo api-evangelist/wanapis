@@ -1,0 +1,238 @@
+openapi: 3.2.0
+info:
+  title: WanAPIs Unified AI Images API
+  version: '2026-05-27'
+  summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
+  description: 'WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
+
+    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
+
+    platform routes them to the appropriate upstream model provider (OpenAI,
+
+    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
+
+    Midjourney, etc.) and applies per-project quota, metering, channel
+
+    routing, and failover.
+
+
+    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
+
+    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
+
+    admin dashboard. Operations included here are taken from
+
+    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
+
+    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
+
+    async task patterns. Request and response schemas mirror the OpenAI HTTP
+
+    API by convention; consult the upstream OpenAI reference for full field
+
+    semantics.
+
+    '
+  termsOfService: https://wanapis.com/
+  contact:
+    name: WanAPIs Support
+    email: support@wanapis.com
+    url: https://wanapis.com/
+  license:
+    name: Proprietary
+    url: https://wanapis.com/
+servers:
+- url: https://api.wanapis.com/v1
+  description: WanAPIs production OpenAI-compatible base URL.
+security:
+- bearerAuth: []
+tags:
+- name: Images
+  description: Image generation and editing.
+paths:
+  /images/generations:
+    post:
+      tags:
+      - Images
+      operationId: createImage
+      summary: Generate an image
+      description: 'Generate images from a text prompt. OpenAI-compatible shape. WanAPIs
+
+        routes the request to the selected image model (DALL·E, Stable
+
+        Diffusion, Midjourney-compatible endpoints, etc.). Long-running jobs
+
+        return a task ID — see `/tasks/{task_id}`.
+
+        '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageGenerationRequest'
+      responses:
+        '200':
+          description: Image generation result (sync or async task handle).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/UpstreamFailure'
+  /images/edits:
+    post:
+      tags:
+      - Images
+      operationId: editImage
+      summary: Edit an image
+      description: Apply an edit to a supplied image using a text prompt and optional mask. Multipart form upload, OpenAI-compatible.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageEditRequest'
+      responses:
+        '200':
+          description: Edited image (sync or async task handle).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/UpstreamFailure'
+components:
+  schemas:
+    ImageResponse:
+      type: object
+      properties:
+        created:
+          type: integer
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              b64_json:
+                type: string
+              revised_prompt:
+                type: string
+        task_id:
+          type: string
+          description: Present when the upstream model runs the job asynchronously; poll via `/tasks/{task_id}`.
+    ImageEditRequest:
+      type: object
+      required:
+      - model
+      - image
+      - prompt
+      properties:
+        model:
+          type: string
+        image:
+          type: string
+          format: binary
+        mask:
+          type: string
+          format: binary
+        prompt:
+          type: string
+        n:
+          type: integer
+        size:
+          type: string
+        response_format:
+          type: string
+          enum:
+          - url
+          - b64_json
+    ImageGenerationRequest:
+      type: object
+      required:
+      - model
+      - prompt
+      properties:
+        model:
+          type: string
+        prompt:
+          type: string
+        n:
+          type: integer
+          default: 1
+        size:
+          type: string
+          description: e.g. 1024x1024
+        quality:
+          type: string
+          enum:
+          - standard
+          - hd
+        style:
+          type: string
+          enum:
+          - vivid
+          - natural
+        response_format:
+          type: string
+          enum:
+          - url
+          - b64_json
+        user:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit or quota exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UpstreamFailure:
+      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: 'Authenticate every request with `Authorization: Bearer <wanapis_api_key>`.
+
+        Keys are issued per project in the WanAPIs dashboard and may be scoped
+
+        with quota and model availability.
+
+        '

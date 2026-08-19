@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WanAPIs Unified AI Models API",
+    "version": "2026-05-27"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wanapis.com/v1/models"
+          },
+          "docs": "List all models in the WanAPIs marketplace available to the caller's project/key."
+        },
+        {
+          "info": {
+            "name": "Retrieve a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.wanapis.com/v1/models/:model",
+            "params": [
+              {
+                "name": "model",
+                "value": "",
+                "type": "path",
+                "description": "Model ID (e.g. `claude-opus-4-7`, `deepseek-v4-pro`)."
+              }
+            ]
+          },
+          "docs": "Retrieve a single model by ID/slug."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
