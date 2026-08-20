@@ -21,6 +21,22 @@ modified: '2026-05-27'
 tags:
   - LLM Gateway
   - AI API Gateway
+  - OpenAI-Compatible
+  - Model Marketplace
+  - LLM
+  - GPT
+  - Claude
+  - Gemini
+  - DeepSeek
+  - Image-Generation
+  - Video Generation
+  - Audio
+  - Multi-Modal
+  - Routing
+  - Failover
+tags_raw:
+  - LLM Gateway
+  - AI API Gateway
   - OpenAI Compatible
   - Model Marketplace
   - LLM
@@ -43,6 +59,10 @@ apis:
   humanURL: https://wanapis.com/
   baseURL: https://api.wanapis.com/v1
   tags:
+  - LLM Gateway
+  - OpenAI-Compatible
+  - Multi-Provider
+  tags_raw:
   - LLM Gateway
   - OpenAI Compatible
   - Multi-Provider
@@ -105,6 +125,8 @@ apis:
   humanURL: https://wanapis.com/
   baseURL: https://api.wanapis.com/v1
   tags:
+  - Image
+  tags_raw:
   - Images
   properties:
   - type: OpenAPI
@@ -135,6 +157,8 @@ apis:
   humanURL: https://wanapis.com/
   baseURL: https://api.wanapis.com/v1
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
