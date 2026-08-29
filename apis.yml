@@ -2,6 +2,18 @@ aid: wanapis
 name: WanAPIs
 description: Developer-focused AI API gateway with an OpenAI-compatible endpoint. One API key gives access to GPT, Claude, Gemini, DeepSeek, image, video, and audio models behind a single unified surface. Platform includes a model marketplace, usage logs, quota management, transparent metering, multi-channel routing, and failover.
 url: https://wanapis.com/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: unknown
