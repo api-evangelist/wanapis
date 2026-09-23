@@ -1,14 +1,7 @@
 {
   "provider": "wanapis",
   "sources": [
-    "wanapis-audio-api-openapi.yml",
-    "wanapis-chat-api-openapi.yml",
-    "wanapis-completions-api-openapi.yml",
-    "wanapis-embeddings-api-openapi.yml",
-    "wanapis-images-api-openapi.yml",
-    "wanapis-models-api-openapi.yml",
-    "wanapis-responses-api-openapi.yml",
-    "wanapis-tasks-api-openapi.yml"
+    "_original/wanapis-openapi.yml"
   ],
   "outputs": [
     "wanapis-audio-api-openapi.yml",
@@ -24,15 +17,18 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "wanapis-audio-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "wanapis-chat-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "wanapis-completions-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "wanapis-embeddings-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "wanapis-images-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "wanapis-models-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "wanapis-responses-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "wanapis-tasks-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "wanapis-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "wanapis-audio-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-chat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-completions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-embeddings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-images-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-models-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-responses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

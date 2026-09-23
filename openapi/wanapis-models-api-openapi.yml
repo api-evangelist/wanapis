@@ -3,36 +3,7 @@ info:
   title: WanAPIs Unified AI Models API
   version: '2026-05-27'
   summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
-  description: 'WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
-
-    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
-
-    platform routes them to the appropriate upstream model provider (OpenAI,
-
-    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
-
-    Midjourney, etc.) and applies per-project quota, metering, channel
-
-    routing, and failover.
-
-
-    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
-
-    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
-
-    admin dashboard. Operations included here are taken from
-
-    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
-
-    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
-
-    async task patterns. Request and response schemas mirror the OpenAI HTTP
-
-    API by convention; consult the upstream OpenAI reference for full field
-
-    semantics.
-
-    '
+  description: WanAPIs (https://wanapis.com) is a developer-focused AI API gateway.
   termsOfService: https://wanapis.com/
   contact:
     name: WanAPIs Support
@@ -92,20 +63,17 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    ModelList:
+      type: object
+      properties:
+        object:
+          type: string
+          const: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
     Error:
       type: object
       properties:
@@ -149,16 +117,19 @@ components:
             unit:
               type: string
               description: e.g. per_million_tokens
-    ModelList:
-      type: object
-      properties:
-        object:
-          type: string
-          const: list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Model'
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

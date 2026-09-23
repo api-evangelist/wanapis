@@ -1,0 +1,35 @@
+# Front Door AI Index — wanapis — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: wanapis
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: wanapis.com
+  final_host: wanapis.com
+  ownership: own
+  owner: wanapis
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 53
+  host_score: 53
+  density: 140.21
+  words: 378
+  tiers:
+    agentic: 6
+    core: 9
+    model: 38
+  ambiguous: 3
+  top_terms:
+    OpenAI: 18
+    AI: 9
+    Claude: 9
+    Gemini: 5
+    GPT: 4
+    agent: 3
+    prompts: 3
+    embedding: 2
+    Anthropic: 1
+    ChatGPT: 1
+    RAG: 1

@@ -3,36 +3,7 @@ info:
   title: WanAPIs Unified AI Audio API
   version: '2026-05-27'
   summary: OpenAI-compatible AI gateway aggregating GPT, Claude, Gemini, DeepSeek and other LLM, image, video, and audio model providers behind a single key.
-  description: 'WanAPIs (https://wanapis.com) is a developer-focused AI API gateway. Clients
-
-    issue OpenAI-style requests against `https://api.wanapis.com/v1`; the
-
-    platform routes them to the appropriate upstream model provider (OpenAI,
-
-    Anthropic, Google, DeepSeek, Moonshot, Alibaba, xAI, Mistral, Stability,
-
-    Midjourney, etc.) and applies per-project quota, metering, channel
-
-    routing, and failover.
-
-
-    This OpenAPI is **hand-authored** by API Evangelist. WanAPIs publishes no
-
-    machine-readable spec — `https://api.wanapis.com/openapi.json` returns the
-
-    admin dashboard. Operations included here are taken from
-
-    https://wanapis.com/docs and https://wanapis.com/pricing and reflect the
-
-    OpenAI-compatible surface plus the documented WanAPIs `/responses` and
-
-    async task patterns. Request and response schemas mirror the OpenAI HTTP
-
-    API by convention; consult the upstream OpenAI reference for full field
-
-    semantics.
-
-    '
+  description: WanAPIs (https://wanapis.com) is a developer-focused AI API gateway.
   termsOfService: https://wanapis.com/
   contact:
     name: WanAPIs Support
@@ -138,7 +109,54 @@ paths:
         '500':
           $ref: '#/components/responses/UpstreamFailure'
 components:
+  responses:
+    RateLimited:
+      description: Rate limit or quota exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UpstreamFailure:
+      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
+    TranscriptionResponse:
+      type: object
+      properties:
+        text:
+          type: string
+        language:
+          type: string
+        duration:
+          type: number
+        segments:
+          type: array
+          items:
+            type: object
     TranscriptionRequest:
       type: object
       required:
@@ -164,34 +182,6 @@ components:
           - vtt
         temperature:
           type: number
-    TranscriptionResponse:
-      type: object
-      properties:
-        text:
-          type: string
-        language:
-          type: string
-        duration:
-          type: number
-        segments:
-          type: array
-          items:
-            type: object
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
-            param:
-              type: string
-              nullable: true
     SpeechRequest:
       type: object
       required:
@@ -217,25 +207,6 @@ components:
           default: mp3
         speed:
           type: number
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    RateLimited:
-      description: Rate limit or quota exceeded.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    UpstreamFailure:
-      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http
