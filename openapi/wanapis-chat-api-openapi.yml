@@ -73,14 +73,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    Forbidden:
+      description: Key does not have access to the requested model or feature.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Key does not have access to the requested model or feature.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
@@ -107,15 +107,6 @@ components:
             param:
               type: string
               nullable: true
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
     ChatCompletionResponse:
       type: object
       properties:
@@ -194,6 +185,15 @@ components:
           - type: object
         user:
           type: string
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
     ChatMessage:
       type: object
       required:

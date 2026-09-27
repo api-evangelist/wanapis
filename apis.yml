@@ -40,7 +40,7 @@ tags:
   - Claude
   - Gemini
   - DeepSeek
-  - Image-Generation
+  - Image Generation
   - Video Generation
   - Audio
   - Multi-Modal
@@ -62,6 +62,7 @@ tags_raw:
   - Multimodal
   - Routing
   - Failover
+  - Image-Generation
 apis:
 - name: WanAPIs Unified AI API
   description: >-

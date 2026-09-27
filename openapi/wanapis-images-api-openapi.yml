@@ -134,32 +134,6 @@ components:
         task_id:
           type: string
           description: Present when the upstream model runs the job asynchronously; poll via `/tasks/{task_id}`.
-    ImageEditRequest:
-      type: object
-      required:
-      - model
-      - image
-      - prompt
-      properties:
-        model:
-          type: string
-        image:
-          type: string
-          format: binary
-        mask:
-          type: string
-          format: binary
-        prompt:
-          type: string
-        n:
-          type: integer
-        size:
-          type: string
-        response_format:
-          type: string
-          enum:
-          - url
-          - b64_json
     ImageGenerationRequest:
       type: object
       required:
@@ -193,6 +167,32 @@ components:
           - b64_json
         user:
           type: string
+    ImageEditRequest:
+      type: object
+      required:
+      - model
+      - image
+      - prompt
+      properties:
+        model:
+          type: string
+        image:
+          type: string
+          format: binary
+        mask:
+          type: string
+          format: binary
+        prompt:
+          type: string
+        n:
+          type: integer
+        size:
+          type: string
+        response_format:
+          type: string
+          enum:
+          - url
+          - b64_json
   securitySchemes:
     bearerAuth:
       type: http
