@@ -102,16 +102,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/wanapis-audio-api-openapi.yml
-- aid: wanapis:wanapis-chat-api
-  name: WanAPIs Chat API
-  description: Chat completion endpoints (OpenAI Chat Completions compatible).
-  humanURL: https://wanapis.com/
-  baseURL: https://api.wanapis.com/v1
-  tags:
-  - Chat
-  properties:
-  - type: OpenAPI
-    url: openapi/wanapis-chat-api-openapi.yml
 - aid: wanapis:wanapis-completions-api
   name: WanAPIs Completions API
   description: Legacy text completions (OpenAI compatible).
@@ -176,6 +166,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/wanapis-tasks-api-openapi.yml
+- aid: wanapis:wanapis-chat-completions-api
+  name: WanAPIs Chat Completions API
+  description: Chat completion endpoints (OpenAI Chat Completions compatible).
+  humanURL: https://wanapis.com/
+  baseURL: https://api.wanapis.com/v1
+  tags:
+  - Chat Completions
+  properties:
+  - type: OpenAPI
+    url: openapi/wanapis-chat-completions-api-openapi.yml
 common:
   - type: DomainSecurity
     url: security/wanapis-domain-security.yml

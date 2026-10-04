@@ -80,26 +80,26 @@ paths:
         '500':
           $ref: '#/components/responses/UpstreamFailure'
 components:
+  responses:
+    UpstreamFailure:
+      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit or quota exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ImageResponse:
-      type: object
-      properties:
-        created:
-          type: integer
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              b64_json:
-                type: string
-              revised_prompt:
-                type: string
-        task_id:
-          type: string
-          description: Present when the upstream model runs the job asynchronously; poll via `/tasks/{task_id}`.
     ImageGenerationRequest:
       type: object
       required:
@@ -133,6 +133,40 @@ components:
           - b64_json
         user:
           type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
+    ImageResponse:
+      type: object
+      properties:
+        created:
+          type: integer
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              b64_json:
+                type: string
+              revised_prompt:
+                type: string
+        task_id:
+          type: string
+          description: Present when the upstream model runs the job asynchronously; poll via `/tasks/{task_id}`.
     ImageEditRequest:
       type: object
       required:
@@ -159,40 +193,6 @@ components:
           enum:
           - url
           - b64_json
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
-            param:
-              type: string
-              nullable: true
-  responses:
-    RateLimited:
-      description: Rate limit or quota exceeded.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    UpstreamFailure:
-      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

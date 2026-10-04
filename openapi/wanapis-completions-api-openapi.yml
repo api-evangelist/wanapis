@@ -104,15 +104,6 @@ components:
                 type: string
         usage:
           $ref: '#/components/schemas/Usage'
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
     Error:
       type: object
       properties:
@@ -128,15 +119,24 @@ components:
             param:
               type: string
               nullable: true
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
   responses:
-    RateLimited:
-      description: Rate limit or quota exceeded.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    RateLimited:
+      description: Rate limit or quota exceeded.
       content:
         application/json:
           schema:

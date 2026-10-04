@@ -73,15 +73,21 @@ components:
                   type: number
         usage:
           $ref: '#/components/schemas/Usage'
-    Usage:
+    Error:
       type: object
       properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+            param:
+              type: string
+              nullable: true
     EmbeddingRequest:
       type: object
       required:
@@ -111,30 +117,24 @@ components:
           type: integer
         user:
           type: string
-    Error:
+    Usage:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
-            param:
-              type: string
-              nullable: true
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
   responses:
-    RateLimited:
-      description: Rate limit or quota exceeded.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    RateLimited:
+      description: Rate limit or quota exceeded.
       content:
         application/json:
           schema:
