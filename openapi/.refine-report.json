@@ -13,17 +13,20 @@
     "wanapis-responses-api-openapi.yml",
     "wanapis-tasks-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "wanapis-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "superseded outputs removed: wanapis-chat-completions-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 9 total)"
   ],
   "skipped": [
     "wanapis-audio-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "wanapis-chat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wanapis-chat-completions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "wanapis-completions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "wanapis-embeddings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "wanapis-images-api-openapi.yml: previously refined output, superseded by openapi/_original/",

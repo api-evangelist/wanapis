@@ -110,8 +110,8 @@ paths:
           $ref: '#/components/responses/UpstreamFailure'
 components:
   responses:
-    RateLimited:
-      description: Rate limit or quota exceeded.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
@@ -122,13 +122,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    RateLimited:
+      description: Rate limit or quota exceeded.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
+    TranscriptionResponse:
+      type: object
+      properties:
+        text:
+          type: string
+        language:
+          type: string
+        duration:
+          type: number
+        segments:
+          type: array
+          items:
+            type: object
     Error:
       type: object
       properties:
@@ -144,44 +157,6 @@ components:
             param:
               type: string
               nullable: true
-    TranscriptionRequest:
-      type: object
-      required:
-      - model
-      - file
-      properties:
-        model:
-          type: string
-        file:
-          type: string
-          format: binary
-        language:
-          type: string
-        prompt:
-          type: string
-        response_format:
-          type: string
-          enum:
-          - json
-          - text
-          - srt
-          - verbose_json
-          - vtt
-        temperature:
-          type: number
-    TranscriptionResponse:
-      type: object
-      properties:
-        text:
-          type: string
-        language:
-          type: string
-        duration:
-          type: number
-        segments:
-          type: array
-          items:
-            type: object
     SpeechRequest:
       type: object
       required:
@@ -206,6 +181,31 @@ components:
           - pcm
           default: mp3
         speed:
+          type: number
+    TranscriptionRequest:
+      type: object
+      required:
+      - model
+      - file
+      properties:
+        model:
+          type: string
+        file:
+          type: string
+          format: binary
+        language:
+          type: string
+        prompt:
+          type: string
+        response_format:
+          type: string
+          enum:
+          - json
+          - text
+          - srt
+          - verbose_json
+          - vtt
+        temperature:
           type: number
   securitySchemes:
     bearerAuth:

@@ -58,34 +58,26 @@ paths:
         '500':
           $ref: '#/components/responses/UpstreamFailure'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UpstreamFailure:
+      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit or quota exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ResponseObject:
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          const: response
-        created:
-          type: integer
-        model:
-          type: string
-        output:
-          type: array
-          items:
-            type: object
-        usage:
-          $ref: '#/components/schemas/Usage'
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
     Error:
       type: object
       properties:
@@ -126,25 +118,33 @@ components:
           default: false
         metadata:
           type: object
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    RateLimited:
-      description: Rate limit or quota exceeded.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    UpstreamFailure:
-      description: Upstream provider failure (500–504). Retry with exponential backoff; WanAPIs may auto-failover to a configured channel.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    ResponseObject:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          const: response
+        created:
+          type: integer
+        model:
+          type: string
+        output:
+          type: array
+          items:
+            type: object
+        usage:
+          $ref: '#/components/schemas/Usage'
   securitySchemes:
     bearerAuth:
       type: http
