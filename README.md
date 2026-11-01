@@ -1,4 +1,4 @@
-# WanAPIs (wanapis)
+# WanAPIs
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,62 +66,159 @@
 
 Developer-focused AI API gateway with an OpenAI-compatible endpoint. One API key gives access to GPT, Claude, Gemini, DeepSeek, image, video, and audio models behind a single unified surface. Platform includes a model marketplace, usage logs, quota management, transparent metering, multi-channel routing, and failover.
 
-**APIs.json:** [https://wanapis.com/apis.yml](https://wanapis.com/apis.yml)
+**Areas:** LLM Gateway · AI API Gateway · OpenAI-Compatible · Model Marketplace · LLM · GPT · Claude · Gemini · DeepSeek · Image Generation · Video Generation · Audio
 
-## Tags
+## WanAPIs on APIs.io
 
-- LLM Gateway
-- AI API Gateway
-- OpenAI Compatible
-- Model Marketplace
-- LLM
-- GPT
-- Claude
-- Gemini
-- DeepSeek
-- Image Generation
-- Video Generation
-- Audio
-- Multimodal
-- Routing
-- Failover
+Everything profiled for WanAPIs is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/wanapis/](https://apis.io/providers/wanapis/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (9)
 
-- **Created:** 2026-05-27
-- **Modified:** 2026-05-27
+- [WanAPIs Unified AI API](https://apis.io/apis/wanapis/wanapis-unified-ai-api/) — OpenAI-compatible REST API gateway aggregating GPT, Claude, Gemini, DeepSeek, plus image, video, and audio model providers behind a single key and…
+- [WanAPIs Audio API](https://apis.io/apis/wanapis/wanapis-audio-api/) — Text-to-speech, transcription, and translation.
+- [WanAPIs Completions API](https://apis.io/apis/wanapis/wanapis-completions-api/) — Legacy text completions (OpenAI compatible).
+- [WanAPIs Embeddings API](https://apis.io/apis/wanapis/wanapis-embeddings-api/) — Vector embeddings (OpenAI compatible).
+- [WanAPIs Images API](https://apis.io/apis/wanapis/wanapis-images-api/) — Image generation and editing.
+- [WanAPIs Models API](https://apis.io/apis/wanapis/wanapis-models-api/) — Discover the models available in the marketplace.
+- [WanAPIs Responses API](https://apis.io/apis/wanapis/wanapis-responses-api/) — WanAPIs Responses API for structured, multi-step model workflows.
+- [WanAPIs Tasks API](https://apis.io/apis/wanapis/wanapis-tasks-api/) — Async task polling for long-running image/video/audio jobs.
+- [WanAPIs Chat Completions API](https://apis.io/apis/wanapis/wanapis-chat-completions-api/) — Chat completion endpoints (OpenAI Chat Completions compatible).
 
-## APIs
+### Published properties
 
-### WanAPIs Unified AI API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-OpenAI-compatible REST API gateway aggregating GPT, Claude, Gemini, DeepSeek, plus image, video, and audio model providers behind a single key and routing/failover layer. Model marketplace, usage logs, quota management, and transparent metering.
+#### JSON Schema (5)
 
-- **Human URL:** [https://wanapis.com/](https://wanapis.com/)
-- **Base URL:** `https://api.wanapis.com/v1`
+The data models the API reads and writes.
 
-#### Tags
+- [ChatCompletionRequest](https://apis.io/schemas/wanapis/wanapis-chatcompletionrequest/)
+- [ChatCompletionResponse](https://apis.io/schemas/wanapis/wanapis-chatcompletionresponse/)
+- [ChatMessage](https://apis.io/schemas/wanapis/wanapis-chatmessage/)
+- [EmbeddingRequest](https://apis.io/schemas/wanapis/wanapis-embeddingrequest/)
+- [ImageGenerationRequest](https://apis.io/schemas/wanapis/wanapis-imagerequest/)
 
-- LLM Gateway
-- OpenAI Compatible
-- Multi-Provider
+#### JSON-LD (1)
 
-#### Properties
+Linked-data contexts for the provider's vocabulary.
 
-- [Documentation](https://wanapis.com/docs)
-- [Model Marketplace](https://wanapis.com/model)
-- [Pricing](https://wanapis.com/pricing)
-- [Signup](https://wanapis.com/auth)
+- [Wanapis Context](https://apis.io/jsonld/wanapis/wanapis-context/)
 
-## Common Properties
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [WanAPIs Domain Vocabulary](https://apis.io/vocabularies/wanapis/wanapis-vocabulary/)
+
+#### Examples (3)
+
+Example requests and responses.
+
+- [Wanapis Chat Completion Example](https://apis.io/examples/wanapis/wanapis-chat-completion-example/)
+- [Wanapis Embedding Example](https://apis.io/examples/wanapis/wanapis-embedding-example/)
+- [Wanapis Image Generation Example](https://apis.io/examples/wanapis/wanapis-image-generation-example/)
+
+#### Collections (8)
+
+Postman and Open Collection request collections.
+
+- [WanAPIs Unified AI Audio API](https://apis.io/collections/wanapis/open-wanapis-audio-api/)
+- [WanAPIs Unified AI Chat API](https://apis.io/collections/wanapis/open-wanapis-chat-api/)
+- [WanAPIs Unified AI Completions API](https://apis.io/collections/wanapis/open-wanapis-completions-api/)
+- [WanAPIs Unified AI Embeddings API](https://apis.io/collections/wanapis/open-wanapis-embeddings-api/)
+- [WanAPIs Unified AI Images API](https://apis.io/collections/wanapis/open-wanapis-images-api/)
+- [WanAPIs Unified AI Models API](https://apis.io/collections/wanapis/open-wanapis-models-api/)
+- [WanAPIs Unified AI Responses API](https://apis.io/collections/wanapis/open-wanapis-responses-api/)
+- [WanAPIs Unified AI Tasks API](https://apis.io/collections/wanapis/open-wanapis-tasks-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [WanAPIs — jsonschema rules](https://apis.io/rules/wanapis/wanapis-jsonschema-spectral-rules/)
+- [WanAPIs API Rules](https://apis.io/rules/wanapis/wanapis-rules/)
+
+#### Security (1)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Wanapis Domain Security](https://apis.io/security/wanapis/wanapis-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Wanapis Plans Pricing](https://apis.io/plans/wanapis/wanapis-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Wanapis Rate Limits](https://apis.io/rate-limits/wanapis/wanapis-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Wanapis Finops](https://apis.io/finops/wanapis/wanapis-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://wanapis.com/)
 - [Documentation](https://wanapis.com/docs)
-- [Model Marketplace](https://wanapis.com/model)
 - [Pricing](https://wanapis.com/pricing)
-- [Sign Up](https://wanapis.com/auth)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 30.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 57.7 |
+| Contract governance | 13.6 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 9.5 |
+| Access clarity | 28.9 |
+
+**Agent readiness 18.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.0** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/wanapis/](https://apis.io/providers/wanapis/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for WanAPIs: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/wanapis/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
